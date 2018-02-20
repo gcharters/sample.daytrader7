@@ -32,6 +32,7 @@
     <TD>$ <%=quoteData.getPrice()%></TD>
     <TD><%=FinancialUtils.printGainHTML(new BigDecimal(quoteData.getChange()))%>
         <%=FinancialUtils.printGainPercentHTML(FinancialUtils.computeGainPercent(quoteData.getPrice(), quoteData.getOpen()))%></TD>
+    <TD><%=quoteData.getRating()%></TD>
     <TD>
         <FORM action="">
             <INPUT type="submit" name="action" value="buy">

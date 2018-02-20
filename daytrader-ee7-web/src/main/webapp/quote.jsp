@@ -142,7 +142,8 @@
                                                     href="docs/glossary.html">current
                                                         price</A></TD>
                                                 <TD><A
-                                                    href="docs/glossary.html">gain/(loss)</A></TD>
+                                                    href="docs/glossary.html">gain/(loss)</A></TD>                                                
+                                                <TD>Rating</TD>
                                                 <TD><A
                                                     href="docs/glossary.html">trade</A></TD>
                                             </TR>

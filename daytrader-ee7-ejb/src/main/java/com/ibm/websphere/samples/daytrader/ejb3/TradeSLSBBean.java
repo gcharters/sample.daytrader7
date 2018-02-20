@@ -57,6 +57,8 @@ import com.ibm.websphere.samples.daytrader.entities.AccountProfileDataBean;
 import com.ibm.websphere.samples.daytrader.entities.HoldingDataBean;
 import com.ibm.websphere.samples.daytrader.entities.OrderDataBean;
 import com.ibm.websphere.samples.daytrader.entities.QuoteDataBean;
+import com.ibm.websphere.samples.daytrader.rest.client.Rating;
+import com.ibm.websphere.samples.daytrader.rest.client.RatingsClient;
 import com.ibm.websphere.samples.daytrader.util.CompleteOrderThread;
 import com.ibm.websphere.samples.daytrader.util.FinancialUtils;
 import com.ibm.websphere.samples.daytrader.util.Log;
@@ -414,7 +416,21 @@ public class TradeSLSBBean implements TradeSLSBRemote, TradeSLSBLocal {
             Log.trace("TradeSLSBBean:getQuote", symbol);
         }
 
-        return entityManager.find(QuoteDataBean.class, symbol);
+		QuoteDataBean quoteData = entityManager.find(QuoteDataBean.class, symbol);
+
+		// Get the rating
+		RatingsClient rc = new RatingsClient.Builder().protocol("http")
+				                                      .hostname("localhost")
+				                                      .port(9080)
+			                                          .path("/ratingsservice/rating")
+			                                          .build();
+		
+		Rating rating = rc.getRating(symbol);
+		if (rating != null) {
+			quoteData.setRating(rating.getRating());			
+		}
+
+		return quoteData;
     }
 
     @Override

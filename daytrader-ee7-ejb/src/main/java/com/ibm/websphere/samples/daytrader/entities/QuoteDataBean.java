@@ -26,6 +26,7 @@ import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.ibm.websphere.samples.daytrader.util.Log;
@@ -69,6 +70,9 @@ public class QuoteDataBean implements Serializable {
     @NotNull
     @Column(name = "CHANGE1", nullable = false)
     private double change1; /* price change */
+    
+    @Transient
+    private String rating = "UNAVAILABLE";
 
     /* Accessor methods for relationship fields are not kept in the DataBean */
 
@@ -118,6 +122,14 @@ public class QuoteDataBean implements Serializable {
 
     public void print() {
         Log.log(this.toString());
+    }
+    
+    public void setRating(String rating) {
+    		this.rating = rating;
+    }
+    
+    public String getRating() {
+    		return this.rating;
     }
 
     public String getSymbol() {
