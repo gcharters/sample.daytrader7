@@ -12,25 +12,10 @@ import javax.ws.rs.core.Response.Status;
 
 public class RatingsClient {
 
-	private final String protocol;
-	private final String hostname;
-	private final int port;
-	private final String path;
-
-	protected String buildURL(String protocol, String host, int port, String path) {
-		try {
-			URI uri = new URI(protocol, null, host, port, path, null, null);
-			return uri.toString();
-		} catch (Exception e) {
-			System.out.println("URISyntaxException");
-			return null;
-		}	}
+	private final String ratingsURL;
 	
 	private RatingsClient(Builder builder) {
-		this.protocol = builder.protocol;
-		this.hostname = builder.hostname;
-		this.port = builder.port;
-		this.path = builder.path;
+		this.ratingsURL = builder.ratingsURL;
 	}
 
 	// Method that creates the client builder
@@ -63,8 +48,7 @@ public class RatingsClient {
 	}
 	
 	public Rating getRating(String symbol) {
-		String url = buildURL(protocol, hostname, port, path + "/" + symbol);
-		Invocation.Builder builder = buildClientBuilder(url);
+		Invocation.Builder builder = buildClientBuilder(ratingsURL + "/" + symbol);
 		return getRatingHelper(builder);
 	}
 
@@ -72,28 +56,10 @@ public class RatingsClient {
 
 	public static class Builder {
 
-		private String protocol = "http";
-		private String hostname = "localhost";
-		private int port = 9080;
-		private String path = "/";
+		private String ratingsURL = "http://localhost:9080/ratingsservice/rating/";
 
-		public Builder protocol(String protocol) {
-			this.protocol = protocol;
-			return this;
-		}
-		
-		public Builder hostname(String hostname) {
-			this.hostname = hostname;
-			return this;
-		}
-
-		public Builder port(int port) {
-			this.port = port;
-			return this;
-		}
-
-		public Builder path(String path) {
-			this.path = path;
+		public Builder url(String url) {
+			this.ratingsURL = url;
 			return this;
 		}
 

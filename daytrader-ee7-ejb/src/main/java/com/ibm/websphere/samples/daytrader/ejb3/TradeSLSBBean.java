@@ -419,11 +419,9 @@ public class TradeSLSBBean implements TradeSLSBRemote, TradeSLSBLocal {
 		QuoteDataBean quoteData = entityManager.find(QuoteDataBean.class, symbol);
 
 		// Get the rating
-		RatingsClient rc = new RatingsClient.Builder().protocol("http")
-				                                      .hostname("localhost")
-				                                      .port(9080)
-			                                          .path("/ratingsservice/rating")
-			                                          .build();
+		RatingsClient rc = new RatingsClient.Builder()
+				                   .url("http://localhost:9080/ratingsservice/rating/")
+			                       .build();
 		
 		Rating rating = rc.getRating(symbol);
 		if (rating != null) {

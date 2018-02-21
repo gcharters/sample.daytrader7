@@ -796,10 +796,8 @@ public class TradeDirect implements TradeServices {
         }
         
         // Get the rating
-		RatingsClient rc = new RatingsClient.Builder().protocol("http")
-                .hostname("localhost")
-                .port(9080)
-                .path("/ratingsservice/rating")
+		RatingsClient rc = new RatingsClient.Builder()
+				.url("http://localhost:9080/ratingsservice/rating/")
                 .build();
 		
 		Rating rating = rc.getRating(symbol);
