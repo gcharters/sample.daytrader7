@@ -34,6 +34,7 @@ import javax.jms.Queue;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
 
@@ -795,10 +796,19 @@ public class TradeDirect implements TradeServices {
             releaseConn(conn);
         }
         
-        // Get the rating
+        InitialContext ctx;
+        String url;
+		try {
+			ctx = new InitialContext();
+			url = (String)ctx.lookup("ratingsServiceURL");
+		} catch (NamingException e) {
+			url = "http://localhost:9080/ratingsservice/rating/";
+		}
+
+		// Get the rating
 		RatingsClient rc = new RatingsClient.Builder()
-				.url("http://localhost:9080/ratingsservice/rating/")
-                .build();
+				                   .url(url)
+			                       .build();
 		
 		Rating rating = rc.getRating(symbol);
 		if (rating != null) {

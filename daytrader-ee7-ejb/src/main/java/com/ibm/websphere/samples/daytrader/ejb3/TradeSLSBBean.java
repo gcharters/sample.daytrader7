@@ -40,6 +40,8 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnectionFactory;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -416,11 +418,21 @@ public class TradeSLSBBean implements TradeSLSBRemote, TradeSLSBLocal {
             Log.trace("TradeSLSBBean:getQuote", symbol);
         }
 
+        InitialContext ctx;
+        String url;
+		try {
+			ctx = new InitialContext();
+			url = (String)ctx.lookup("ratingsServiceURL");
+		} catch (NamingException e) {
+			url = "http://localhost:9080/ratingsservice/rating/";
+		}
+
+        
 		QuoteDataBean quoteData = entityManager.find(QuoteDataBean.class, symbol);
 
 		// Get the rating
 		RatingsClient rc = new RatingsClient.Builder()
-				                   .url("http://localhost:9080/ratingsservice/rating/")
+				                   .url(url)
 			                       .build();
 		
 		Rating rating = rc.getRating(symbol);
